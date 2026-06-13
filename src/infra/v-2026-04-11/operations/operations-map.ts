@@ -1,0 +1,37 @@
+import { ChatSendData } from "./chat-send-data";
+import { ChatNewData } from "./chat-new-data";
+import { ChatStreamData } from "./chat-stream-data";
+import { ChatStreamEndData } from "./chat-stream-end-data";
+import { ChatCreatedData } from "./chat-created-data";
+import { ChatReadyData } from "./chat-ready-data";
+import { ChatStatusData } from "./chat-status-data";
+import { ChatTerminatedData } from "./chat-terminated-data";
+import { ChatAbortData } from "./chat-abort-data";
+import { ChatAbortAckData } from "./chat-abort-ack-data";
+import { TaskRunData } from "./task-run-data";
+import { TaskCancelData } from "./task-cancel-data";
+import { TaskStartedData } from "./task-started-data";
+import { TaskCancelledData } from "./task-cancelled-data";
+import { TaskCompletedData } from "./task-completed-data";
+import { TaskFailedData } from "./task-failed-data";
+import { ErrorData } from "./error-data";
+
+export type ProtocolV20260411Operations = {
+  "chat.send": ChatSendData;
+  "chat.new": ChatNewData;
+  "chat.stream": ChatStreamData;
+  "chat.stream_end": ChatStreamEndData;
+  "chat.created": ChatCreatedData;
+  "chat.ready": ChatReadyData;
+  "chat.status": ChatStatusData;
+  "chat.terminated": ChatTerminatedData;
+  "chat.abort": ChatAbortData;
+  "chat.abort_ack": ChatAbortAckData;
+  "task.run": TaskRunData;
+  "task.cancel": TaskCancelData;
+  "task.started": TaskStartedData;
+  "task.cancelled": TaskCancelledData;
+  "task.completed": TaskCompletedData;
+  "task.failed": TaskFailedData;
+  "error": ErrorData;
+};

@@ -1,0 +1,35 @@
+{
+  "name": "@walde.ai/ws-protocol",
+  "version": "0.0.6",
+  "description": "Shared WebSocket protocol abstraction for Walde",
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && tsc-alias && tsc -p tsconfig.esm.json && tsc-alias -p tsconfig.esm.json",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "walde",
+    "websocket",
+    "protocol",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.0.0"
+  }
+}
