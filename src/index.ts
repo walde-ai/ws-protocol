@@ -30,6 +30,8 @@ export { TaskStartedData } from './infra/v-2026-04-11/operations/task-started-da
 export { TaskCancelledData } from './infra/v-2026-04-11/operations/task-cancelled-data';
 export { TaskCompletedData } from './infra/v-2026-04-11/operations/task-completed-data';
 export { TaskFailedData } from './infra/v-2026-04-11/operations/task-failed-data';
+export { BriefUpdatedData } from './infra/v-2026-04-11/operations/brief-updated-data';
+export { UiNavData } from './infra/v-2026-04-11/operations/ui-nav-data';
 export { ErrorData } from './infra/v-2026-04-11/operations/error-data';
 export { ProtocolV20260411Operations } from './infra/v-2026-04-11/operations/operations-map';
 

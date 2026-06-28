@@ -15,6 +15,8 @@ import { TaskCancelledData } from "./task-cancelled-data";
 import { TaskCompletedData } from "./task-completed-data";
 import { TaskFailedData } from "./task-failed-data";
 import { ErrorData } from "./error-data";
+import { BriefUpdatedData } from "./brief-updated-data";
+import { UiNavData } from "./ui-nav-data";
 
 export type ProtocolV20260411Operations = {
   "chat.send": ChatSendData;
@@ -33,5 +35,7 @@ export type ProtocolV20260411Operations = {
   "task.cancelled": TaskCancelledData;
   "task.completed": TaskCompletedData;
   "task.failed": TaskFailedData;
+  "brief.updated": BriefUpdatedData;
+  "ui.nav": UiNavData;
   "error": ErrorData;
 };

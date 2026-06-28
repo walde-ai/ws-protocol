@@ -191,6 +191,39 @@ function isValidErrorData(data: unknown): data is ProtocolV20260411Operations['e
   );
 }
 
+const VALID_BRIEF_STATES = new Set(['DRAFT', 'INTENT_DEFINED', 'TECH_SPEC_DEFINED', 'IMPLEMENTING', 'IMPLEMENTED', 'FAILED', 'ARCHIVED']);
+
+function isValidBriefUpdatedData(data: unknown): data is ProtocolV20260411Operations['brief.updated'] {
+  if (
+    typeof data !== 'object' ||
+    data === null ||
+    typeof (data as Record<string, unknown>).briefId !== 'string' ||
+    (data as Record<string, unknown>).briefId === ''
+  ) {
+    return false;
+  }
+  const d = data as Record<string, unknown>;
+  if (typeof d.state === 'string' && !VALID_BRIEF_STATES.has(d.state as string)) {
+    return false;
+  }
+  if (typeof d.field === 'string' && (d.field === 'title' || d.field === 'intent')) {
+    return typeof d.delta === 'string';
+  }
+  if (d.complete === true) {
+    return typeof d.title === 'string' && typeof d.intent === 'string' && typeof d.state === 'string';
+  }
+  return typeof d.state === 'string';
+}
+
+function isValidUiNavData(data: unknown): data is ProtocolV20260411Operations['ui.nav'] {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    typeof (data as Record<string, unknown>).route === 'string' &&
+    (data as Record<string, unknown>).route !== ''
+  );
+}
+
 const OPERATION_VALIDATORS: { [K in keyof ProtocolV20260411Operations]: (data: unknown) => data is ProtocolV20260411Operations[K] } = {
   'chat.send': isValidChatSendData,
   'chat.new': isValidChatNewData,
@@ -208,6 +241,8 @@ const OPERATION_VALIDATORS: { [K in keyof ProtocolV20260411Operations]: (data: u
   'task.cancelled': isValidTaskCancelledData,
   'task.completed': isValidTaskCompletedData,
   'task.failed': isValidTaskFailedData,
+  'brief.updated': isValidBriefUpdatedData,
+  'ui.nav': isValidUiNavData,
   'error': isValidErrorData,
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "@walde.ai/ws-protocol",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Shared WebSocket protocol abstraction for Walde",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
