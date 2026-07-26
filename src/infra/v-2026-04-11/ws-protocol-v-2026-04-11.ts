@@ -20,14 +20,55 @@ export interface WSProtocolV20260411Config {
 export const WS_PROTOCOL_V20260411_NAME = 'ws.walde.ai-2026-04-11';
 
 function isValidChatSendData(data: unknown): data is ProtocolV20260411Operations['chat.send'] {
-  return (
-    typeof data === 'object' &&
-    data !== null &&
-    typeof (data as Record<string, unknown>).chatId === 'string' &&
-    (data as Record<string, unknown>).chatId !== '' &&
-    typeof (data as Record<string, unknown>).message === 'string' &&
-    (data as Record<string, unknown>).message !== ''
-  );
+  if (
+    typeof data !== 'object' ||
+    data === null ||
+    typeof (data as Record<string, unknown>).chatId !== 'string' ||
+    (data as Record<string, unknown>).chatId === '' ||
+    typeof (data as Record<string, unknown>).message !== 'string' ||
+    (data as Record<string, unknown>).message === ''
+  ) {
+    return false;
+  }
+
+  const record = data as Record<string, unknown>;
+
+  // `attachments` and `siteId` are additive: older clients omit them, and the
+  // server treats an omitted `attachments` as an empty array and an omitted
+  // `siteId` as the empty string. When present they must be well-formed.
+  const attachments = record.attachments;
+  if (attachments !== undefined) {
+    if (!Array.isArray(attachments)) {
+      return false;
+    }
+    for (const attachment of attachments) {
+      if (
+        typeof attachment !== 'object' ||
+        attachment === null ||
+        typeof (attachment as Record<string, unknown>).stagingKey !== 'string' ||
+        (attachment as Record<string, unknown>).stagingKey === '' ||
+        typeof (attachment as Record<string, unknown>).fileName !== 'string' ||
+        (attachment as Record<string, unknown>).fileName === '' ||
+        typeof (attachment as Record<string, unknown>).contentType !== 'string' ||
+        (attachment as Record<string, unknown>).contentType === ''
+      ) {
+        return false;
+      }
+    }
+  }
+
+  const siteId = record.siteId;
+  if (siteId !== undefined && typeof siteId !== 'string') {
+    return false;
+  }
+
+  // A message carrying attachments must name the working stage the attachments
+  // would route to, so `siteId` is required (non-empty) when attachments exist.
+  if (Array.isArray(attachments) && attachments.length > 0 && (typeof siteId !== 'string' || siteId === '')) {
+    return false;
+  }
+
+  return true;
 }
 
 function isValidChatNewData(data: unknown): data is ProtocolV20260411Operations['chat.new'] {
@@ -60,6 +101,15 @@ function isValidChatStreamEndData(data: unknown): data is ProtocolV20260411Opera
     typeof data === 'object' &&
     data !== null &&
     typeof (data as Record<string, unknown>).chatId === 'string'
+  );
+}
+
+function isValidChatThinkingData(data: unknown): data is ProtocolV20260411Operations['chat.thinking'] {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    typeof (data as Record<string, unknown>).chatId === 'string' &&
+    typeof (data as Record<string, unknown>).delta === 'string'
   );
 }
 
@@ -224,11 +274,31 @@ function isValidUiNavData(data: unknown): data is ProtocolV20260411Operations['u
   );
 }
 
+// `ping` (client → server) and `pong` (server → client) carry the empty object
+// as their data payload. The validators accept exactly one shape: an object
+// with zero own properties. Anything else is rejected.
+function isEmptyObjectData(data: unknown): boolean {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    Object.keys(data).length === 0
+  );
+}
+
+function isValidPingData(data: unknown): data is ProtocolV20260411Operations['ping'] {
+  return isEmptyObjectData(data);
+}
+
+function isValidPongData(data: unknown): data is ProtocolV20260411Operations['pong'] {
+  return isEmptyObjectData(data);
+}
+
 const OPERATION_VALIDATORS: { [K in keyof ProtocolV20260411Operations]: (data: unknown) => data is ProtocolV20260411Operations[K] } = {
   'chat.send': isValidChatSendData,
   'chat.new': isValidChatNewData,
   'chat.stream': isValidChatStreamData,
   'chat.stream_end': isValidChatStreamEndData,
+  'chat.thinking': isValidChatThinkingData,
   'chat.created': isValidChatCreatedData,
   'chat.ready': isValidChatReadyData,
   'chat.status': isValidChatStatusData,
@@ -243,6 +313,8 @@ const OPERATION_VALIDATORS: { [K in keyof ProtocolV20260411Operations]: (data: u
   'task.failed': isValidTaskFailedData,
   'brief.updated': isValidBriefUpdatedData,
   'ui.nav': isValidUiNavData,
+  'ping': isValidPingData,
+  'pong': isValidPongData,
   'error': isValidErrorData,
 };
 

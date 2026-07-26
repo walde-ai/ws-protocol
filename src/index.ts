@@ -13,10 +13,11 @@ export { IWSSession } from './domain/ports/i-ws-session';
 export { IWSOperationListener } from './domain/ports/i-ws-operation-listener';
 
 // Protocol v2026-04-11 operations
-export { ChatSendData } from './infra/v-2026-04-11/operations/chat-send-data';
+export { ChatSendData, ChatAttachment } from './infra/v-2026-04-11/operations/chat-send-data';
 export { ChatNewData } from './infra/v-2026-04-11/operations/chat-new-data';
 export { ChatStreamData } from './infra/v-2026-04-11/operations/chat-stream-data';
 export { ChatStreamEndData } from './infra/v-2026-04-11/operations/chat-stream-end-data';
+export { ChatThinkingData } from './infra/v-2026-04-11/operations/chat-thinking-data';
 export { ChatCreatedData } from './infra/v-2026-04-11/operations/chat-created-data';
 export { ChatReadyData } from './infra/v-2026-04-11/operations/chat-ready-data';
 export { ChatStatusData } from './infra/v-2026-04-11/operations/chat-status-data';
@@ -33,6 +34,8 @@ export { TaskFailedData } from './infra/v-2026-04-11/operations/task-failed-data
 export { BriefUpdatedData } from './infra/v-2026-04-11/operations/brief-updated-data';
 export { UiNavData } from './infra/v-2026-04-11/operations/ui-nav-data';
 export { ErrorData } from './infra/v-2026-04-11/operations/error-data';
+export { PingData } from './infra/v-2026-04-11/operations/ping-data';
+export { PongData } from './infra/v-2026-04-11/operations/pong-data';
 export { ProtocolV20260411Operations } from './infra/v-2026-04-11/operations/operations-map';
 
 // Protocol v2026-04-11 implementation

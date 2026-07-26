@@ -2,6 +2,7 @@ import { ChatSendData } from "./chat-send-data";
 import { ChatNewData } from "./chat-new-data";
 import { ChatStreamData } from "./chat-stream-data";
 import { ChatStreamEndData } from "./chat-stream-end-data";
+import { ChatThinkingData } from "./chat-thinking-data";
 import { ChatCreatedData } from "./chat-created-data";
 import { ChatReadyData } from "./chat-ready-data";
 import { ChatStatusData } from "./chat-status-data";
@@ -17,12 +18,15 @@ import { TaskFailedData } from "./task-failed-data";
 import { ErrorData } from "./error-data";
 import { BriefUpdatedData } from "./brief-updated-data";
 import { UiNavData } from "./ui-nav-data";
+import { PingData } from "./ping-data";
+import { PongData } from "./pong-data";
 
 export type ProtocolV20260411Operations = {
   "chat.send": ChatSendData;
   "chat.new": ChatNewData;
   "chat.stream": ChatStreamData;
   "chat.stream_end": ChatStreamEndData;
+  "chat.thinking": ChatThinkingData;
   "chat.created": ChatCreatedData;
   "chat.ready": ChatReadyData;
   "chat.status": ChatStatusData;
@@ -37,5 +41,7 @@ export type ProtocolV20260411Operations = {
   "task.failed": TaskFailedData;
   "brief.updated": BriefUpdatedData;
   "ui.nav": UiNavData;
+  "ping": PingData;
+  "pong": PongData;
   "error": ErrorData;
 };
